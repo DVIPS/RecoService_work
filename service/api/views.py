@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 from service.api.exceptions import UserNotFoundError
 from service.log import app_logger
+from service.models import Top_popular
 
 
 class RecoResponse(BaseModel):
@@ -13,6 +14,7 @@ class RecoResponse(BaseModel):
 
 
 router = APIRouter()
+top_popular_modal = Top_popular()
 
 
 @router.get(
@@ -35,13 +37,12 @@ async def get_reco(
 ) -> RecoResponse:
     app_logger.info(f"Request for model: {model_name}, user_id: {user_id}")
 
-    # Write your code here
+    if model_name == "top_popular":
+        reco = top_popular_modal.recomend()
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
 
-    k_recs = request.app.state.k_recs
-    reco = list(range(k_recs))
     return RecoResponse(user_id=user_id, items=reco)
 
 
