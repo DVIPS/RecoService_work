@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, FastAPI, Request
 from pydantic import BaseModel
 
-from service.api.exceptions import UserNotFoundError
+from service.api.exceptions import ModelNotFound, UserNotFoundError
 from service.log import app_logger
 from service.models import Top_popular
 
@@ -39,6 +39,8 @@ async def get_reco(
 
     if model_name == "top_popular":
         reco = top_popular_modal.recomend()
+    else:
+        raise ModelNotFound(error_message=f"Model {model_name} not found")
 
     if user_id > 10**9:
         raise UserNotFoundError(error_message=f"User {user_id} not found")
