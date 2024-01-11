@@ -3,10 +3,9 @@ from typing import List
 from fastapi import APIRouter, FastAPI, Request
 from pydantic import BaseModel
 
-from service.api.exceptions import UserNotFoundError,ModelNotFound
+from service.api.exceptions import ModelNotFound, UserNotFoundError
 from service.log import app_logger
 from service.models import Top_popular
-
 
 
 class RecoResponse(BaseModel):
